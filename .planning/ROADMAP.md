@@ -43,12 +43,12 @@ Plans:
   2. Research output covers signals from TikTok, YouTube, Facebook, Instagram, and X/Twitter in a single run
   3. Research output includes named creators per niche with at least one profitability signal (follower count, brand deal indicator, or cross-platform presence)
   4. Research output is broken down by topic, content style, posting frequency, and media type — not just topic alone
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 02-01: Brave Search (or Tavily) integration and search provider abstraction
-- [ ] 02-02: Structured query battery for trend discovery and creator signal extraction
-- [ ] 02-03: Async search execution, result schema, and Pydantic validation
+- [x] 02-01-PLAN.md — Tavily + Pydantic install, Config TAVILY_API_KEY extension, research output schema (Wave 1) — completed 2026-03-01
+- [ ] 02-02-PLAN.md — ResearchEngine with two-pass autonomous discovery, budget-guarded search, pipeline wiring (Wave 2)
+- [ ] 02-03-PLAN.md — LLM-assisted structured extraction, ValidationError handling, research_output.json, human verification (Wave 3)
 
 ### Phase 3: LLM Orchestrator
 **Goal**: Agent converts raw research findings into 5-10 specific, evidence-grounded content ideas
@@ -57,7 +57,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Given research output, the orchestrator produces exactly 5-10 ideas each formatted as a topic plus a specific angle
   2. Each idea includes a rationale that cites a specific creator or metric and platform from the research — not a generic claim
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 - [ ] 03-01: Multi-pass LLM synthesis pipeline (trend extraction, creator signal extraction, idea generation)
@@ -70,7 +70,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Triggering the report step delivers an HTML email to the configured recipient address
   2. The email body contains all 5-10 ideas with their topic, angle, and rationale visible and readable
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 - [ ] 04-01: Jinja2 HTML email template and plain-text fallback
@@ -83,7 +83,7 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. The pipeline fires on Monday morning without any manual action by the user
   2. A full end-to-end run completes successfully — research, synthesis, and email delivery — without manual intervention between steps
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
 - [ ] 05-01: Cron or GitHub Actions schedule configuration and end-to-end integration test
@@ -95,8 +95,8 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/2 | Complete   | 2026-03-01 |
-| 2. Research Engine | 0/3 | Not started | - |
+| 1. Foundation | 2/2 | Complete    | 2026-03-01 |
+| 2. Research Engine | 1/3 | In Progress|  |
 | 3. LLM Orchestrator | 0/2 | Not started | - |
 | 4. Report and Email Delivery | 0/2 | Not started | - |
 | 5. Scheduler and Integration | 0/1 | Not started | - |
