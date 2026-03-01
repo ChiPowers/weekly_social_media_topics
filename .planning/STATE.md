@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-01T04:24:40.415Z"
+last_updated: "2026-03-01T04:29:09.563Z"
 progress:
   total_phases: 2
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 5
-  completed_plans: 4
+  completed_plans: 5
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 2 of 5 (Research Engine)
-Plan: 2 of 3 in current phase (Plan 02-02 complete)
-Status: Phase 2 in progress
-Last activity: 2026-03-01 — Completed plan 02-02: ResearchEngine, two-pass discovery, pipeline integration
+Plan: 3 of 3 in current phase (Plan 02-03 paused at checkpoint:human-verify)
+Status: Phase 2 in progress — awaiting human verification
+Last activity: 2026-02-28 — Completed plan 02-03 Tasks 1-2: LLM extraction, JSON output wiring; paused at Task 3 human-verify checkpoint
 
-Progress: [███░░░░░░░] 40% (4/10 plans complete)
+Progress: [████░░░░░░] 50% (5/10 plans complete — partial, checkpoint pending)
 
 ## Performance Metrics
 
@@ -50,6 +50,7 @@ Progress: [███░░░░░░░] 40% (4/10 plans complete)
 | Phase 01-foundation P01 | 2 | 2 tasks | 6 files |
 | Phase 02-research-engine P01 | 2 min | 2 tasks | 4 files |
 | Phase 02-research-engine P02 | 2 | 2 tasks | 2 files |
+| Phase 02-research-engine P03 | 3 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -74,6 +75,9 @@ Recent decisions affecting current work:
 - [Phase 02-research-engine]: topic='news' for niche discovery, topic='general' for creator queries — profiles don't appear in news mode
 - [Phase 02-research-engine]: Budget target 15 Tavily + 10 Claude = 25 per run, leaves 25 slack in default budget of 50
 - [Phase 02-research-engine]: Heuristic stubs in Plan 02 deliberately minimal — Plan 03 replaces with LLM extraction to enable end-to-end pipeline now
+- [Phase 02-research-engine]: One LLM call per niche (batch efficiency) — avoids per-result calls, keeps Claude budget within 10-call target
+- [Phase 02-research-engine]: ValidationError caught in _assemble_niches() — falls back to heuristic extractors so pipeline always completes without crashing
+- [Phase 02-research-engine]: research_output.json gitignored — live trend data changes every run, not appropriate for version control
 
 ### Pending Todos
 
@@ -88,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-01
-Stopped at: Completed 02-02-PLAN.md — ResearchEngine with two-pass discovery, budget-guarded search, pipeline integration
-Resume file: .planning/phases/02-research-engine/02-03-PLAN.md
+Last session: 2026-02-28
+Stopped at: Checkpoint:human-verify in 02-03-PLAN.md Task 3 — LLM extraction complete, awaiting live run with real API keys
+Resume file: .planning/phases/02-research-engine/02-03-PLAN.md (resume from Task 3)
