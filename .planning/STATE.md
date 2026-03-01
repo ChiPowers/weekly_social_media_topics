@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: unknown
-last_updated: "2026-03-01T03:05:05.622Z"
+status: in-progress
+last_updated: "2026-03-01T03:07:28Z"
 progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 2
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 1 of 5 (Foundation)
-Plan: 1 of 2 in current phase
-Status: In progress
-Last activity: 2026-02-28 — Completed plan 01-01: project scaffold and credential loading
+Plan: 2 of 2 in current phase
+Status: Phase 1 complete
+Last activity: 2026-02-28 — Completed plan 01-02: budget enforcer and dry-run harness
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [██████████] 100% (Phase 1 complete)
 
 ## Performance Metrics
 
@@ -62,6 +62,9 @@ Recent decisions affecting current work:
 - [Phase 01-foundation]: load_dotenv() called once at module import in agent/config.py — never called elsewhere
 - [Phase 01-foundation]: Config.from_env() collects all missing required vars before raising — developer sees every problem at once with .env.example reference
 - [Phase 01-foundation]: override=False in load_dotenv() so GitHub Actions secrets take precedence over .env without branching
+- [Phase 01-foundation]: BudgetTracker.charge() checks BEFORE incrementing — exception fires before any API call, counter never incremented on exceeded budget
+- [Phase 01-foundation]: Only run.py calls sys.exit() — internal modules raise exceptions, keeping them testable
+- [Phase 01-foundation]: Pipeline live stub calls budget.charge(1) even before Phase 2 adds real calls — budget system exercised from day one
 
 ### Pending Todos
 
@@ -77,5 +80,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 01-foundation/01-01-PLAN.md — project scaffold and credential loading
+Stopped at: Completed 01-foundation/01-02-PLAN.md — budget enforcer and dry-run harness
 Resume file: None

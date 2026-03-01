@@ -8,8 +8,8 @@
 ### Setup & Config
 
 - [x] **SETUP-01**: User can configure all API keys via a `.env` file without modifying source code
-- [ ] **SETUP-02**: User can run the pipeline in dry-run mode to test without making real API calls or sending email
-- [ ] **SETUP-03**: Agent enforces a hard per-run API call budget and halts cleanly if the limit would be exceeded
+- [x] **SETUP-02**: User can run the pipeline in dry-run mode to test without making real API calls or sending email
+- [x] **SETUP-03**: Agent enforces a hard per-run API call budget and halts cleanly if the limit would be exceeded
 
 ### Research Engine
 
@@ -66,8 +66,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | SETUP-01 | Phase 1 | Complete |
-| SETUP-02 | Phase 1 | Pending |
-| SETUP-03 | Phase 1 | Pending |
+| SETUP-02 | Phase 1 | Complete |
+| SETUP-03 | Phase 1 | Complete |
 | RSCH-01 | Phase 2 | Pending |
 | RSCH-02 | Phase 2 | Pending |
 | RSCH-03 | Phase 2 | Pending |
