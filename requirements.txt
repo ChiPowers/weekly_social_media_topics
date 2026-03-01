@@ -1,1 +1,4 @@
 python-dotenv==1.2.1
+tavily-python==0.7.22
+pydantic==2.12.5
+anthropic>=0.40.0

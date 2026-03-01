@@ -14,6 +14,7 @@ class Config:
     anthropic_api_key: str
     email_recipient: str
     api_call_budget: int
+    tavily_api_key: str
 
     @classmethod
     def from_env(cls) -> "Config":
@@ -22,7 +23,7 @@ class Config:
         Raises ValueError listing ALL missing variables at once if any are absent.
         References .env.example in the error message so the fix is obvious.
         """
-        required = ["ANTHROPIC_API_KEY", "EMAIL_RECIPIENT"]
+        required = ["ANTHROPIC_API_KEY", "EMAIL_RECIPIENT", "TAVILY_API_KEY"]
         missing = [var for var in required if not os.environ.get(var)]
         if missing:
             raise ValueError(
@@ -33,4 +34,5 @@ class Config:
             anthropic_api_key=os.environ["ANTHROPIC_API_KEY"],
             email_recipient=os.environ["EMAIL_RECIPIENT"],
             api_call_budget=int(os.environ.get("API_CALL_BUDGET", "50")),
+            tavily_api_key=os.environ["TAVILY_API_KEY"],
         )
