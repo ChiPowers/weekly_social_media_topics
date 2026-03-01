@@ -1,8 +1,12 @@
 # agent/pipeline.py
 import logging
 
+from tavily import TavilyClient
+from anthropic import Anthropic
+
 from agent.config import Config
 from agent.budget import BudgetTracker
+from agent.research import ResearchEngine
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +28,13 @@ def run_pipeline(config: Config, budget: BudgetTracker, dry_run: bool) -> None:
         logger.info("[DRY-RUN] Pipeline complete. No real API calls or email sent.")
         return
 
-    # Live path — Phase 2+ fills in real implementation here.
-    # Every real API call must call budget.charge(n) BEFORE the call.
-    budget.charge(1)
-    logger.info("Pipeline complete (live mode stub — no real calls yet)")
+    # Initialize search clients
+    tavily_client = TavilyClient(api_key=config.tavily_api_key)
+    anthropic_client = Anthropic(api_key=config.anthropic_api_key)
+
+    # Phase 2: Run research engine
+    research_engine = ResearchEngine(tavily_client, anthropic_client, budget)
+    findings = research_engine.run(dry_run=False)
+    logger.info("Research complete: %d niches discovered, %d budget used", len(findings.niches), findings.budget_used)
+
+    # Phase 3+ will add LLM synthesis and email delivery here
