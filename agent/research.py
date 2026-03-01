@@ -3,10 +3,13 @@ Research engine: autonomous trending niche and creator discovery via Tavily web 
 Expected API call budget per run: ~15 Tavily searches + ~10 Claude extraction calls = ~25 total.
 Designed for default API_CALL_BUDGET=50; leaves 25 calls as slack for Phase 3 LLM synthesis.
 """
+import json
 import logging
 import re
 from datetime import date
 from typing import Optional
+
+from pydantic import ValidationError
 
 from tavily import TavilyClient
 from anthropic import Anthropic
@@ -105,10 +108,7 @@ class ResearchEngine:
         )
         raw_creator_results = self._run_creator_discovery(raw_niche_results)
 
-        # Structured extraction happens in Plan 03 — for now, return raw results bundled
-        # into NicheFindings stubs so the pipeline can call research.run() end-to-end.
-        # Plan 03 replaces this stub assembly with LLM extraction.
-        niches = self._assemble_stub_niches(raw_niche_results, raw_creator_results)
+        niches = self._assemble_niches(raw_niche_results, raw_creator_results)
 
         return ResearchFindings(
             run_date=date.today().isoformat(),
@@ -200,25 +200,133 @@ class ResearchEngine:
                 break
         return unique
 
-    def _assemble_stub_niches(
+    def _extract_with_llm(self, snippets_text: str, schema: dict) -> Optional[dict]:
+        """
+        Pass aggregated Tavily snippets to Claude Haiku for structured JSON extraction.
+        Charges budget.charge(1) BEFORE the LLM call.
+        Returns parsed dict on success, None on ValidationError or JSON parse failure.
+        Never raises — logs warnings and returns None so the pipeline continues.
+        """
+        prompt = (
+            "You are a structured data extraction assistant.\n\n"
+            "Extract social media trend and creator information from these web search snippets.\n"
+            "Return ONLY valid JSON matching the schema below — no explanation, no markdown code blocks.\n"
+            "Use null for any field not present in the snippets. "
+            "Use compound platform strings like 'TikTok/Instagram' when attribution is ambiguous.\n\n"
+            f"SCHEMA:\n{json.dumps(schema, indent=2)}\n\n"
+            f"SEARCH SNIPPETS:\n{snippets_text}\n\n"
+            "Return JSON only:"
+        )
+        self.budget.charge(1)  # LLM call charges budget — must come before messages.create()
+        try:
+            message = self.anthropic.messages.create(
+                model="claude-haiku-4-5",
+                max_tokens=2048,
+                messages=[{"role": "user", "content": prompt}],
+            )
+            raw_text = message.content[0].text.strip()
+            # Strip markdown code fences if Claude wraps output despite instruction
+            if raw_text.startswith("```"):
+                raw_text = "\n".join(raw_text.split("\n")[1:])
+                raw_text = raw_text.rstrip("`").strip()
+            return json.loads(raw_text)
+        except (json.JSONDecodeError, IndexError, Exception) as e:
+            logger.warning("LLM extraction failed (JSON parse error): %s", e)
+            return None
+
+    def _build_snippets_text(self, result_batches: list[dict]) -> str:
+        """
+        Aggregate Tavily result snippets from multiple result batches into a single text block.
+        Filters out results with published_date older than 14 days (stale result mitigation per RESEARCH.md).
+        Limits to 15 snippets max to stay within LLM context.
+        """
+        from datetime import date, timedelta
+        cutoff = date.today() - timedelta(days=14)
+        snippets = []
+        for batch in result_batches:
+            for result in batch.get("results", []):
+                # Filter stale results when published_date is available (topic="news" only)
+                pub_date_str = result.get("published_date")
+                if pub_date_str:
+                    try:
+                        pub_date = date.fromisoformat(pub_date_str[:10])
+                        if pub_date < cutoff:
+                            continue
+                    except ValueError:
+                        pass
+                title = result.get("title", "")
+                content = result.get("content", "")
+                url = result.get("url", "")
+                if title or content:
+                    snippets.append(f"Title: {title}\nURL: {url}\nContent: {content}")
+                if len(snippets) >= 15:
+                    break
+            if len(snippets) >= 15:
+                break
+        return "\n\n---\n\n".join(snippets)
+
+    def _assemble_niches(
         self,
         niche_results: list[dict],
         creator_results: dict[str, list[dict]],
     ) -> list[NicheFindings]:
         """
-        Stub assembler: wraps raw results into NicheFindings with minimal field population.
-        Plan 03 REPLACES this method body with LLM extraction — do not make this smarter.
-        The stub ensures the pipeline runs end-to-end before Plan 03 adds LLM extraction.
+        LLM-assisted assembly: extract structured NicheFindings from raw search results.
+        One LLM call per niche (not per search result — batch efficiency).
+        Falls back to heuristic creators if LLM extraction fails for a niche.
+        Applies creator deduplication across all results per niche.
         """
         niches = []
+        niche_schema = NicheFindings.model_json_schema()
+
         for niche_topic, creator_result_list in creator_results.items():
-            creators = self._extract_creators_heuristic(creator_result_list)
-            niches.append(NicheFindings(
-                topic=niche_topic,
-                platform_attribution="unknown",  # Plan 03 sets this from LLM extraction
-                engagement_signal="trending this week",  # Plan 03 sets this from LLM extraction
-                top_creators=creators,
-            ))
+            # Aggregate all snippets for this niche (niche discovery + creator results)
+            all_batches = niche_results + creator_result_list
+            snippets_text = self._build_snippets_text(all_batches)
+
+            if not snippets_text.strip():
+                logger.warning("No snippets for niche '%s' — skipping", niche_topic)
+                continue
+
+            # LLM extraction — one call per niche
+            extracted_dict = self._extract_with_llm(snippets_text, niche_schema)
+
+            if extracted_dict:
+                try:
+                    niche_findings = NicheFindings.model_validate(extracted_dict)
+                    # Enforce CONTEXT.md decision: 3–5 creators per niche
+                    niche_findings.top_creators = niche_findings.top_creators[:5]
+                    niches.append(niche_findings)
+                    logger.info(
+                        "LLM extraction ok: niche='%s', platform='%s', creators=%d",
+                        niche_findings.topic,
+                        niche_findings.platform_attribution,
+                        len(niche_findings.top_creators),
+                    )
+                except ValidationError as e:
+                    logger.warning(
+                        "NicheFindings validation failed for niche '%s': %s — using heuristic fallback",
+                        niche_topic, e,
+                    )
+                    # Fallback: heuristic creator extraction from Plan 02
+                    creators = self._extract_creators_heuristic(creator_result_list)
+                    niches.append(NicheFindings(
+                        topic=niche_topic,
+                        platform_attribution="unknown",
+                        engagement_signal="trending this week",
+                        top_creators=creators,
+                    ))
+            else:
+                # LLM returned None — use heuristic fallback, don't crash
+                logger.warning("LLM extraction returned None for niche '%s' — using heuristic fallback", niche_topic)
+                creators = self._extract_creators_heuristic(creator_result_list)
+                niches.append(NicheFindings(
+                    topic=niche_topic,
+                    platform_attribution="unknown",
+                    engagement_signal="trending this week",
+                    top_creators=creators,
+                ))
+
         return niches
 
     def _extract_creators_heuristic(self, creator_result_list: list[dict]) -> list[CreatorProfile]:
