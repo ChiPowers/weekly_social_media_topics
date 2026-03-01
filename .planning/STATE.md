@@ -2,13 +2,13 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: in-progress
-last_updated: "2026-03-01T04:18:01Z"
+status: unknown
+last_updated: "2026-03-01T04:24:40.415Z"
 progress:
-  total_phases: 5
+  total_phases: 2
   completed_phases: 1
-  total_plans: 10
-  completed_plans: 3
+  total_plans: 5
+  completed_plans: 4
 ---
 
 # Project State
@@ -23,11 +23,11 @@ See: .planning/PROJECT.md (updated 2026-02-28)
 ## Current Position
 
 Phase: 2 of 5 (Research Engine)
-Plan: 1 of 3 in current phase (Plan 02-01 complete)
+Plan: 2 of 3 in current phase (Plan 02-02 complete)
 Status: Phase 2 in progress
-Last activity: 2026-03-01 — Completed plan 02-01: Tavily install, Config extension, Pydantic v2 schema
+Last activity: 2026-03-01 — Completed plan 02-02: ResearchEngine, two-pass discovery, pipeline integration
 
-Progress: [██░░░░░░░░] 30% (3/10 plans complete)
+Progress: [███░░░░░░░] 40% (4/10 plans complete)
 
 ## Performance Metrics
 
@@ -49,6 +49,7 @@ Progress: [██░░░░░░░░] 30% (3/10 plans complete)
 *Updated after each plan completion*
 | Phase 01-foundation P01 | 2 | 2 tasks | 6 files |
 | Phase 02-research-engine P01 | 2 min | 2 tasks | 4 files |
+| Phase 02-research-engine P02 | 2 | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -70,6 +71,9 @@ Recent decisions affecting current work:
 - [Phase 02-research-engine]: Optional fields in CreatorProfile and NicheFindings default to None — web search snippets may not surface all data points reliably
 - [Phase 02-research-engine]: ResearchFindings uses model_dump_json() / model_validate_json() — avoids deprecated Pydantic v1 .dict() / .parse_raw()
 - [Phase 02-research-engine]: anthropic>=0.40.0 pinned in requirements.txt now — prevents Phase 3 from revisiting dependency resolution
+- [Phase 02-research-engine]: topic='news' for niche discovery, topic='general' for creator queries — profiles don't appear in news mode
+- [Phase 02-research-engine]: Budget target 15 Tavily + 10 Claude = 25 per run, leaves 25 slack in default budget of 50
+- [Phase 02-research-engine]: Heuristic stubs in Plan 02 deliberately minimal — Plan 03 replaces with LLM extraction to enable end-to-end pipeline now
 
 ### Pending Todos
 
@@ -85,5 +89,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-03-01
-Stopped at: Completed 02-01-PLAN.md — Tavily install, Config TAVILY_API_KEY extension, Pydantic v2 schema
-Resume file: .planning/phases/02-research-engine/02-02-PLAN.md
+Stopped at: Completed 02-02-PLAN.md — ResearchEngine with two-pass discovery, budget-guarded search, pipeline integration
+Resume file: .planning/phases/02-research-engine/02-03-PLAN.md

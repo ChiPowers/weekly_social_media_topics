@@ -14,8 +14,8 @@
 ### Research Engine
 
 - [x] **RSCH-01**: Agent autonomously discovers trending social media niches and topics each run — no user input required
-- [ ] **RSCH-02**: Research covers all major platforms (TikTok, YouTube, Facebook, Instagram, X/Twitter)
-- [ ] **RSCH-03**: Research identifies top-performing creators in discovered niches and extracts profitability signals (follower counts, brand deal indicators, cross-platform presence)
+- [x] **RSCH-02**: Research covers all major platforms (TikTok, YouTube, Facebook, Instagram, X/Twitter)
+- [x] **RSCH-03**: Research identifies top-performing creators in discovered niches and extracts profitability signals (follower counts, brand deal indicators, cross-platform presence)
 - [x] **RSCH-04**: Research produces findings broken down by topic, content style, posting frequency, and media type
 
 ### Idea Generation
@@ -69,8 +69,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SETUP-02 | Phase 1 | Complete |
 | SETUP-03 | Phase 1 | Complete |
 | RSCH-01 | Phase 2 | Complete |
-| RSCH-02 | Phase 2 | Pending |
-| RSCH-03 | Phase 2 | Pending |
+| RSCH-02 | Phase 2 | Complete |
+| RSCH-03 | Phase 2 | Complete |
 | RSCH-04 | Phase 2 | Complete |
 | IDEA-01 | Phase 3 | Pending |
 | IDEA-02 | Phase 3 | Pending |
