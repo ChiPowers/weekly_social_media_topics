@@ -37,4 +37,9 @@ def run_pipeline(config: Config, budget: BudgetTracker, dry_run: bool) -> None:
     findings = research_engine.run(dry_run=False)
     logger.info("Research complete: %d niches discovered, %d budget used", len(findings.niches), findings.budget_used)
 
+    # Write research output for Phase 3 consumption
+    output_path = "research_output.json"
+    findings.to_json_file(output_path)
+    logger.info("Research findings written to %s (%d niches)", output_path, len(findings.niches))
+
     # Phase 3+ will add LLM synthesis and email delivery here
