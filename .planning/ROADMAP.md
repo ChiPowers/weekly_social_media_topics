@@ -31,8 +31,8 @@ Decimal phases appear between their surrounding integers in numeric order.
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01-PLAN.md — Project scaffold, dependency setup, and `.env` config loading (Wave 1)
-- [ ] 01-02-PLAN.md — Dry-run mode and API call budget enforcement (Wave 2)
+- [x] 01-01-PLAN.md — Project scaffold, dependency setup, and `.env` config loading (Wave 1) — completed 2026-03-01
+- [x] 01-02-PLAN.md — Dry-run mode and API call budget enforcement (Wave 2) — completed 2026-03-01
 
 ### Phase 2: Research Engine
 **Goal**: Agent autonomously discovers trending niches and top-performing creators across major social platforms each run
@@ -47,8 +47,8 @@ Plans:
 
 Plans:
 - [x] 02-01-PLAN.md — Tavily + Pydantic install, Config TAVILY_API_KEY extension, research output schema (Wave 1) — completed 2026-03-01
-- [ ] 02-02-PLAN.md — ResearchEngine with two-pass autonomous discovery, budget-guarded search, pipeline wiring (Wave 2)
-- [ ] 02-03-PLAN.md — LLM-assisted structured extraction, ValidationError handling, research_output.json, human verification (Wave 3)
+- [x] 02-02-PLAN.md — ResearchEngine with two-pass autonomous discovery, budget-guarded search, pipeline wiring (Wave 2) — completed 2026-03-01
+- [x] 02-03-PLAN.md — LLM-assisted structured extraction, ValidationError handling, research_output.json, human verification (Wave 3) — completed 2026-02-28
 
 ### Phase 3: LLM Orchestrator
 **Goal**: Agent converts raw research findings into 5-10 specific, evidence-grounded content ideas

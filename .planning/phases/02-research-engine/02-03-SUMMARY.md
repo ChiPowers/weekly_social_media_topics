@@ -3,7 +3,6 @@ phase: 02-research-engine
 plan: 03
 subsystem: api
 tags: [anthropic, claude-haiku, pydantic, llm-extraction, research-engine, json-output]
-status: partial — awaiting checkpoint:human-verify (Task 3)
 
 # Dependency graph
 requires:
@@ -17,6 +16,7 @@ provides:
   - "_assemble_niches(): LLM extraction per niche with ValidationError fallback to heuristic"
   - "pipeline.py writes research_output.json after live research run"
   - "research_output.json gitignored"
+  - "Live run verified: research_output.json produced with valid NicheFindings and named creators"
 affects:
   - 03-idea-generation
 
@@ -47,7 +47,7 @@ patterns-established:
   - "LLM extraction pattern: charge budget before API call, catch all exceptions, return None, log warning"
   - "Graceful degradation: heuristic fallback when LLM fails — pipeline always completes"
 
-requirements-completed: []  # RSCH-03 and RSCH-04 pending live verification at Task 3 checkpoint
+requirements-completed: [RSCH-03, RSCH-04]
 
 # Metrics
 duration: 3min
@@ -56,18 +56,14 @@ completed: 2026-02-28
 
 # Phase 2 Plan 03: LLM Extraction Summary
 
-**LLM-powered structured NicheFindings extraction via claude-haiku-4-5 replacing stub assembler, with ValidationError fallback and research_output.json file output**
-
-## Status: PARTIAL — Paused at checkpoint:human-verify (Task 3)
-
-Tasks 1 and 2 complete. Task 3 requires human verification of live run with real API keys.
+**LLM-powered structured NicheFindings extraction via claude-haiku-4-5 replacing stub assembler, with ValidationError fallback and research_output.json file output — live run verified by human approval**
 
 ## Performance
 
-- **Duration:** ~3 min
+- **Duration:** ~3 min (Tasks 1-2 automated) + human verification (Task 3)
 - **Started:** 2026-03-01T04:26:04Z
-- **Completed:** 2026-03-01T04:29:00Z (partial — checkpoint reached)
-- **Tasks completed:** 2 of 3
+- **Completed:** 2026-02-28 (Tasks 1-2); human verification approved 2026-02-28
+- **Tasks completed:** 3 of 3
 - **Files modified:** 3
 
 ## Accomplishments
@@ -79,6 +75,7 @@ Tasks 1 and 2 complete. Task 3 requires human verification of live run with real
 - `pipeline.py` writes `findings.to_json_file("research_output.json")` after live research run
 - `research_output.json` added to `.gitignore`
 - All 4 automated verification checks pass; `python run.py --dry-run` exits 0 unchanged
+- Live run with real API keys verified by human — `research_output.json` produced with valid NicheFindings and named creators (RSCH-03, RSCH-04 satisfied)
 
 ## Task Commits
 
@@ -86,7 +83,7 @@ Each task was committed atomically:
 
 1. **Task 1: Add LLM extraction to ResearchEngine — replace stub assembler** - `4e27a8a` (feat)
 2. **Task 2: Write research_output.json and end-to-end dry-run verification** - `17e48e6` (feat)
-3. **Task 3: Human verification of live research output** - PENDING (checkpoint)
+3. **Task 3: Human verification of live research output** - approved by human (checkpoint:human-verify)
 
 ## Files Created/Modified
 
@@ -111,17 +108,30 @@ None.
 
 ## User Setup Required
 
-Live verification (Task 3 checkpoint) requires:
+Live verification (Task 3) required:
 - `TAVILY_API_KEY` in `.env` (from app.tavily.com)
 - `ANTHROPIC_API_KEY` in `.env` (real Anthropic key)
 - `EMAIL_RECIPIENT` in `.env` (any valid email address)
 
+Human verified: `research_output.json` produced valid NicheFindings with named creators. Approved.
+
 ## Next Phase Readiness
 
-- `agent/research.py` with LLM extraction is complete — awaiting live verification
-- `pipeline.py` output wiring is complete — `research_output.json` will be written after live run
+- `agent/research.py` with LLM extraction is complete and live-verified
+- `pipeline.py` output wiring is complete — `research_output.json` written after live run
 - Phase 3 (idea generation) can consume `research_output.json` via `ResearchFindings.from_json_file()`
+- All Phase 2 requirements satisfied: RSCH-01, RSCH-02, RSCH-03, RSCH-04
+
+## Self-Check: PASSED
+
+- agent/research.py: FOUND
+- agent/pipeline.py: FOUND
+- .gitignore: FOUND
+- 02-03-SUMMARY.md: FOUND
+- Commit 4e27a8a (Task 1): FOUND
+- Commit 17e48e6 (Task 2): FOUND
+- Task 3: Human-approved (checkpoint:human-verify)
 
 ---
 *Phase: 02-research-engine*
-*Completed: 2026-02-28 (partial — checkpoint)*
+*Completed: 2026-02-28*
