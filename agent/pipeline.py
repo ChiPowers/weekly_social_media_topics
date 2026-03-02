@@ -7,6 +7,7 @@ from anthropic import Anthropic
 from agent.config import Config
 from agent.budget import BudgetTracker
 from agent.research import ResearchEngine
+from agent.synthesizer import IdeaSynthesizer
 
 logger = logging.getLogger(__name__)
 
@@ -42,4 +43,12 @@ def run_pipeline(config: Config, budget: BudgetTracker, dry_run: bool) -> None:
     findings.to_json_file(output_path)
     logger.info("Research findings written to %s (%d niches)", output_path, len(findings.niches))
 
-    # Phase 3+ will add LLM synthesis and email delivery here
+    # Phase 3: Run idea synthesizer
+    synthesizer = IdeaSynthesizer(anthropic_client=anthropic_client, budget=budget)
+    idea_report = synthesizer.run(findings, dry_run=False)
+    idea_report.to_json_file("ideas_output.json")
+    logger.info(
+        "Synthesis complete: %d ideas generated from %d niches",
+        len(idea_report.ideas),
+        idea_report.niches_processed,
+    )

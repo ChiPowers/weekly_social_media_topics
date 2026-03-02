@@ -4,3 +4,4 @@ __pycache__/
 *.pyo
 .pytest_cache/
 research_output.json
+ideas_output.json
