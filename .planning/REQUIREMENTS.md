@@ -20,8 +20,8 @@
 
 ### Idea Generation
 
-- [ ] **IDEA-01**: Agent generates 5–10 content ideas per report, each framed as a topic + angle
-- [ ] **IDEA-02**: Each idea includes a data-backed rationale citing specific evidence (creator, metric, platform) from the research
+- [x] **IDEA-01**: Agent generates 5–10 content ideas per report, each framed as a topic + angle
+- [x] **IDEA-02**: Each idea includes a data-backed rationale citing specific evidence (creator, metric, platform) from the research
 
 ### Delivery
 
@@ -72,8 +72,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSCH-02 | Phase 2 | Complete |
 | RSCH-03 | Phase 2 | Complete |
 | RSCH-04 | Phase 2 | Complete |
-| IDEA-01 | Phase 3 | Pending |
-| IDEA-02 | Phase 3 | Pending |
+| IDEA-01 | Phase 3 | Complete |
+| IDEA-02 | Phase 3 | Complete |
 | DLVR-01 | Phase 4 | Pending |
 | DLVR-02 | Phase 4 | Pending |
 | SCHED-01 | Phase 5 | Pending |
