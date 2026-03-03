@@ -6,6 +6,7 @@ from anthropic import Anthropic
 
 from agent.config import Config
 from agent.budget import BudgetTracker
+from agent.mailer import EmailDeliverer
 from agent.research import ResearchEngine
 from agent.synthesizer import IdeaSynthesizer
 
@@ -33,6 +34,9 @@ def run_pipeline(config: Config, budget: BudgetTracker, dry_run: bool) -> None:
     tavily_client = TavilyClient(api_key=config.tavily_api_key)
     anthropic_client = Anthropic(api_key=config.anthropic_api_key)
 
+    # Phase 4: Initialize email deliverer (used after synthesis completes)
+    deliverer = EmailDeliverer(config=config)
+
     # Phase 2: Run research engine
     research_engine = ResearchEngine(tavily_client, anthropic_client, budget)
     findings = research_engine.run(dry_run=False)
@@ -43,12 +47,21 @@ def run_pipeline(config: Config, budget: BudgetTracker, dry_run: bool) -> None:
     findings.to_json_file(output_path)
     logger.info("Research findings written to %s (%d niches)", output_path, len(findings.niches))
 
-    # Phase 3: Run idea synthesizer
-    synthesizer = IdeaSynthesizer(anthropic_client=anthropic_client, budget=budget)
-    idea_report = synthesizer.run(findings, dry_run=False)
+    # Phase 3: Run idea synthesizer — catch ValueError to attempt error notification email
+    try:
+        synthesizer = IdeaSynthesizer(anthropic_client=anthropic_client, budget=budget)
+        idea_report = synthesizer.run(findings, dry_run=False)
+    except ValueError as exc:
+        logger.error("Synthesis failed: %s — attempting error notification email", exc)
+        deliverer.send_error(str(exc))  # send_error swallows ResendError internally
+        raise  # re-raise so run.py exits with code 1 via existing ValueError handler
+
     idea_report.to_json_file("ideas_output.json")
     logger.info(
         "Synthesis complete: %d ideas generated from %d niches",
         len(idea_report.ideas),
         idea_report.niches_processed,
     )
+
+    # Phase 4: Deliver report
+    deliverer.send_report(idea_report)
