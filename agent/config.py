@@ -33,10 +33,10 @@ class Config:
                 f"Copy .env.example to .env and fill in the values."
             )
         return cls(
-            anthropic_api_key=os.environ["ANTHROPIC_API_KEY"],
-            email_recipient=os.environ["EMAIL_RECIPIENT"],
+            anthropic_api_key=os.environ["ANTHROPIC_API_KEY"].strip(),
+            email_recipient=os.environ["EMAIL_RECIPIENT"].strip(),
             api_call_budget=int(os.environ.get("API_CALL_BUDGET") or "50"),
-            tavily_api_key=os.environ["TAVILY_API_KEY"],
-            resend_api_key=os.environ["RESEND_API_KEY"],
-            email_from=os.environ["EMAIL_FROM"],
+            tavily_api_key=os.environ["TAVILY_API_KEY"].strip(),
+            resend_api_key=os.environ["RESEND_API_KEY"].strip(),
+            email_from=os.environ["EMAIL_FROM"].strip(),
         )
