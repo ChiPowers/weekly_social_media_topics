@@ -218,7 +218,11 @@ class IdeaSynthesizer:
             raw_text = "\n".join(raw_text.split("\n")[1:])
             raw_text = raw_text.rstrip("`").strip()
         try:
-            return json.loads(raw_text)
+            # Use raw_decode to stop at the first complete JSON object,
+            # ignoring any trailing text Claude appends after the JSON.
+            decoder = json.JSONDecoder()
+            result, _ = decoder.raw_decode(raw_text)
+            return result
         except json.JSONDecodeError as e:
             logger.error("JSON parse error in LLM response: %s", e)
             return None

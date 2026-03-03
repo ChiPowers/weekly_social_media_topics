@@ -116,6 +116,17 @@ None
 - Plan 04-02 wires EmailDeliverer into pipeline.py — reads IdeaReport.from_json_file() and calls send_report()
 - No blockers for Plan 04-02
 
+## Self-Check: PASSED
+
+- agent/mailer.py: FOUND
+- agent/templates/report.html: FOUND
+- agent/templates/error.html: FOUND
+- 04-01-SUMMARY.md: FOUND
+- Commit 20aa719 (Task 1): FOUND
+- Commit 090457b (Task 2): FOUND
+- Commit a07c55c (Task 3): FOUND
+- Commit cd6c1aa (docs/metadata): FOUND
+
 ---
 *Phase: 04-report-and-email-delivery*
 *Completed: 2026-03-03*

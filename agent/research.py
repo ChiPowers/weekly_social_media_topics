@@ -229,7 +229,11 @@ class ResearchEngine:
             if raw_text.startswith("```"):
                 raw_text = "\n".join(raw_text.split("\n")[1:])
                 raw_text = raw_text.rstrip("`").strip()
-            return json.loads(raw_text)
+            result = json.loads(raw_text)
+            # Claude sometimes wraps the dict in a list — unwrap it
+            if isinstance(result, list):
+                result = result[0] if result else None
+            return result
         except (json.JSONDecodeError, IndexError, Exception) as e:
             logger.warning("LLM extraction failed (JSON parse error): %s", e)
             return None

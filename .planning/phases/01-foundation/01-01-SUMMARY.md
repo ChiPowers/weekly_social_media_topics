@@ -72,7 +72,7 @@ Each task was committed atomically:
 1. **Task 1: Project scaffold** - `5890010` (chore)
 2. **Task 2: Config loading** - `91b77e9` (feat)
 
-**Plan metadata:** _(to be added after docs commit)_
+**Plan metadata:** `ee6b13a` (docs: complete plan)
 
 ## Files Created/Modified
 - `requirements.txt` - Single dependency: python-dotenv==1.2.1
