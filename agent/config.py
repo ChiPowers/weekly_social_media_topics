@@ -35,7 +35,7 @@ class Config:
         return cls(
             anthropic_api_key=os.environ["ANTHROPIC_API_KEY"],
             email_recipient=os.environ["EMAIL_RECIPIENT"],
-            api_call_budget=int(os.environ.get("API_CALL_BUDGET", "50")),
+            api_call_budget=int(os.environ.get("API_CALL_BUDGET") or "50"),
             tavily_api_key=os.environ["TAVILY_API_KEY"],
             resend_api_key=os.environ["RESEND_API_KEY"],
             email_from=os.environ["EMAIL_FROM"],
