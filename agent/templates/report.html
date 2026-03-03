@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Weekly Content Intel</title>
+</head>
+<body style="font-family: Georgia, serif; background-color: #ffffff; color: #1a1a1a; max-width: 600px; margin: 0 auto; padding: 24px;">
+
+  <h2 style="margin: 0 0 8px 0; font-size: 22px; color: #1a1a1a;">Your Weekly Content Intel</h2>
+  <p style="margin: 0 0 32px 0; font-size: 14px; color: #666666;">{{ header_date }}</p>
+
+  {% for idea in ideas %}
+
+  <div style="margin-bottom: 32px;">
+    <h3 style="margin: 0 0 6px 0; font-size: 18px; font-weight: bold; color: #1a1a1a;">{{ loop.index }}. {{ idea.topic }}</h3>
+    <p style="margin: 0 0 12px 0; font-size: 15px; color: #333333;">{{ idea.angle }}</p>
+
+    <ul style="margin: 0 0 12px 0; padding-left: 20px;">
+      {% for point in idea.talking_points %}
+      <li style="margin-bottom: 6px; font-size: 15px; color: #1a1a1a;">{{ point }}</li>
+      {% endfor %}
+    </ul>
+
+    <p style="margin: 0 0 12px 0; font-style: italic; color: #666666; font-size: 13px;">{{ idea.rationale }}</p>
+
+    {% if idea.platform or idea.content_format %}
+    <p style="margin: 0; font-size: 13px; color: #333333;">
+      {% if idea.platform %}Best for: {{ idea.platform }}{% endif %}{% if idea.platform and idea.content_format %} | {% endif %}{% if idea.content_format %}Format: {{ idea.content_format }}{% endif %}
+    </p>
+    {% endif %}
+  </div>
+
+  {% if not loop.last %}<hr style="border: none; border-top: 1px solid #e0e0e0; margin: 0 0 32px 0;">{% endif %}
+
+  {% endfor %}
+
+</body>
+</html>
