@@ -25,8 +25,8 @@
 
 ### Delivery
 
-- [ ] **DLVR-01**: Report is delivered as an HTML email to a configured recipient address
-- [ ] **DLVR-02**: Email body contains an ideas section with all 5–10 ideas and their rationale
+- [x] **DLVR-01**: Report is delivered as an HTML email to a configured recipient address
+- [x] **DLVR-02**: Email body contains an ideas section with all 5–10 ideas and their rationale
 
 ### Scheduling
 
@@ -74,8 +74,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RSCH-04 | Phase 2 | Complete |
 | IDEA-01 | Phase 3 | Complete |
 | IDEA-02 | Phase 3 | Complete |
-| DLVR-01 | Phase 4 | Pending |
-| DLVR-02 | Phase 4 | Pending |
+| DLVR-01 | Phase 4 | Complete |
+| DLVR-02 | Phase 4 | Complete |
 | SCHED-01 | Phase 5 | Pending |
 
 **Coverage:**

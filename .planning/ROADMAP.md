@@ -70,11 +70,11 @@ Plans:
 **Success Criteria** (what must be TRUE):
   1. Triggering the report step delivers an HTML email to the configured recipient address
   2. The email body contains all 5-10 ideas with their topic, angle, and rationale visible and readable
-**Plans**: 3 plans
+**Plans**: 2 plans
 
 Plans:
-- [ ] 04-01: Jinja2 HTML email template and plain-text fallback
-- [ ] 04-02: Resend integration, delivery confirmation logging, and deliverability validation
+- [ ] 04-01-PLAN.md — Jinja2 + Resend install, Config extension, HTML/error templates, EmailDeliverer class (Wave 1)
+- [ ] 04-02-PLAN.md — Pipeline wiring, error fallback email, and live delivery human verification (Wave 2)
 
 ### Phase 5: Scheduler and Integration
 **Goal**: The complete pipeline runs automatically every Monday morning with no manual trigger required
@@ -98,5 +98,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 2/2 | Complete    | 2026-03-01 |
 | 2. Research Engine | 3/3 | Complete    | 2026-03-02 |
 | 3. LLM Orchestrator | 2/2 | Complete   | 2026-03-02 |
-| 4. Report and Email Delivery | 0/2 | Not started | - |
+| 4. Report and Email Delivery | 1/2 | In Progress|  |
 | 5. Scheduler and Integration | 0/1 | Not started | - |
