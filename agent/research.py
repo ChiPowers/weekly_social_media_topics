@@ -20,23 +20,22 @@ from agent.models import CreatorProfile, NicheFindings, ResearchFindings
 logger = logging.getLogger(__name__)
 
 # --- Query bank ---
-# Niche discovery: cross-platform trending queries (topic="news", time_range="week")
-# "This week" language is required per CONTEXT.md — do not use "popular" or "all-time"
+# Niche discovery: Hyrox-focused trending queries (topic="news", time_range="week")
+# "This week" language is required — do not use "popular" or "all-time"
 NICHE_DISCOVERY_QUERIES = [
-    "viral TikTok content trending this week high engagement 2026",
-    "most viewed YouTube videos topics trending this week 2026",
-    "trending Instagram Reels niche viral this week",
-    "Facebook viral content topics this week high shares",
-    "X Twitter trending topics creators viral this week",
-    "social media viral niche content style most viewed this week",
+    "Hyrox training tips trending TikTok YouTube this week 2026",
+    "Hyrox race results athlete performance trending this week",
+    "Hyrox workout programming viral content this week high engagement",
+    "Hyrox nutrition fueling strategy trending social media this week",
+    "Hyrox gear equipment review trending this week creators",
+    "Hyrox competition preparation race day strategy viral this week",
 ]
 
 # Creator discovery: per-niche template (topic="general", time_range="week")
 # {niche} is replaced at runtime with discovered niche topic
-# Includes "100K followers" to surface mid-tier creator tier per CONTEXT.md decision
 CREATOR_QUERY_TEMPLATES = [
-    "{niche} TikTok creator 100K followers trending this week",
-    "{niche} YouTube Instagram creator brand deal sponsorship viral 2026",
+    "{niche} Hyrox creator TikTok Instagram trending this week",
+    "{niche} Hyrox YouTube creator brand sponsorship athlete viral 2026",
 ]
 
 # Brand deal signal keywords per CONTEXT.md — flag if any appear in snippet

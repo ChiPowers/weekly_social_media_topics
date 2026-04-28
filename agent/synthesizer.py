@@ -134,11 +134,16 @@ class IdeaSynthesizer:
         idea_report_schema = json.dumps(IdeaReport.model_json_schema(), indent=2)
 
         prompt = (
-            "You are a content strategy analyst generating weekly content briefings for social media creators.\n\n"
-            "Below is this week's research data: trending niches and top-performing creators discovered via live web search.\n\n"
+            "You are a content strategy analyst generating weekly content briefings for a Hyrox content creator.\n\n"
+            "Hyrox is a global fitness racing event combining 8km of running with 8 functional fitness stations "
+            "(SkiErg, sled push, sled pull, burpee broad jumps, rowing, farmers carry, sandbag lunges, wall balls). "
+            "The audience is Hyrox athletes and aspiring competitors — they care about training, race strategy, "
+            "results, nutrition, gear, and what top athletes are doing.\n\n"
+            "Below is this week's research data: trending Hyrox topics and top-performing creators discovered via live web search.\n\n"
             f"Generate {min_ideas}\u2013{max_ideas} content ideas. For each idea:\n"
-            "- topic: the niche/subject area\n"
-            "- angle: a specific title-level hook (e.g., \"Why 80% of TikTok creators use the wrong hook format\") "
+            "- topic: the Hyrox subject area (e.g., training, race strategy, nutrition, gear, athlete spotlight)\n"
+            "- angle: a specific title-level hook relevant to Hyrox athletes "
+            "(e.g., \"The sled push mistake costing you 3 minutes on race day\") "
             "— NOT a format recommendation or audience segment\n"
             "- talking_points: exactly 2-3 bullets covering what you'd actually say in the content — not meta-notes\n"
             "- rationale: cite [Creator name] ([follower count], [platform]) [specific action] this week/recently "
@@ -146,6 +151,7 @@ class IdeaSynthesizer:
             "- platform: include ONLY if research clearly points to one platform\n"
             "- content_format: include ONLY if research surfaced a clear format signal (e.g., \"short-form video dominates\")\n\n"
             "Rules:\n"
+            "- All ideas MUST be relevant to Hyrox athletes or the Hyrox community\n"
             "- Each idea MUST cite different creators — never repeat the same creator across ideas\n"
             "- Rationale MUST contain \"this week\" or \"recently\"\n"
             "- Do NOT generate ideas for niches where you cannot cite a real named creator with metrics\n"
