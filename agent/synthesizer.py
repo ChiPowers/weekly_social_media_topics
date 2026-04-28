@@ -141,7 +141,7 @@ class IdeaSynthesizer:
             "results, nutrition, gear, and what top athletes are doing.\n\n"
             "Below is this week's research data: trending Hyrox topics and top-performing creators discovered via live web search.\n\n"
             f"Generate {min_ideas}\u2013{max_ideas} content ideas. For each idea:\n"
-            "- topic: the Hyrox subject area (e.g., training, race strategy, nutrition, gear, athlete spotlight)\n"
+            "- topic: the Hyrox subject area (e.g., training, race strategy, nutrition, gear, athlete spotlight, ticket sales, Youngstars)\n"
             "- angle: a specific title-level hook relevant to Hyrox athletes "
             "(e.g., \"The sled push mistake costing you 3 minutes on race day\") "
             "— NOT a format recommendation or audience segment\n"

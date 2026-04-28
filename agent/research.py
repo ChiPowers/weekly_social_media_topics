@@ -29,6 +29,8 @@ NICHE_DISCOVERY_QUERIES = [
     "Hyrox nutrition fueling strategy trending social media this week",
     "Hyrox gear equipment review trending this week creators",
     "Hyrox competition preparation race day strategy viral this week",
+    "Hyrox 2026 ticket sales registration open event dates",
+    "Hyrox Youngstars youth junior competition 2026",
 ]
 
 # Creator discovery: per-niche template (topic="general", time_range="week")
