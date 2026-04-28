@@ -182,13 +182,10 @@ class ResearchEngine:
         """
         topics = []
         for result_batch in niche_results:
-            results = result_batch.get("results", [])
-            if results:
-                # Use first result title as niche proxy — crude but sufficient for Pass 2 query construction
-                title = results[0].get("title", "")
-                if title and len(title) > 5:
-                    # Trim to first 50 chars for use as query fragment
-                    topics.append(title[:50].strip())
+            # Use the original query as the niche topic — result titles can be unrelated articles
+            query = result_batch.get("_query", "")
+            if query:
+                topics.append(query[:50].strip())
         # Deduplicate and cap at 5 niches (3 queries each = 10 creator searches max)
         seen = set()
         unique = []
@@ -210,7 +207,8 @@ class ResearchEngine:
         """
         prompt = (
             "You are a structured data extraction assistant.\n\n"
-            "Extract social media trend and creator information from these web search snippets.\n"
+            "Extract Hyrox-related social media trend and creator information from these web search snippets.\n"
+            "Focus ONLY on Hyrox athletes, training, events, gear, nutrition, and competition content — ignore any non-Hyrox results.\n"
             "Return ONLY valid JSON matching the schema below — no explanation, no markdown code blocks.\n"
             "Use null for any field not present in the snippets. "
             "Use compound platform strings like 'TikTok/Instagram' when attribution is ambiguous.\n\n"
@@ -285,8 +283,12 @@ class ResearchEngine:
         niche_schema = NicheFindings.model_json_schema()
 
         for niche_topic, creator_result_list in creator_results.items():
-            # Aggregate all snippets for this niche (niche discovery + creator results)
-            all_batches = niche_results + creator_result_list
+            # Use only creator results for this niche — mixing all niche batches causes
+            # the LLM to latch onto unrelated trending topics in the combined snippets
+            matching_niche_batches = [
+                b for b in niche_results if niche_topic in b.get("_query", "")
+            ]
+            all_batches = matching_niche_batches + creator_result_list
             snippets_text = self._build_snippets_text(all_batches)
 
             if not snippets_text.strip():
