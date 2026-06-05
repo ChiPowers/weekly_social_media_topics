@@ -27,13 +27,13 @@ jobs:
           echo "ANTHROPIC set: ${ANTHROPIC_API_KEY:+yes}"
           echo "API_CALL_BUDGET: ${API_CALL_BUDGET:-unset}"
           pip show tavily-python || pip show tavily || true
-          python - <<'PY'
-try:
-    import tavily
-    print('TAVILY_IMPORT_OK', getattr(tavily, '__version__', 'unknown'))
-except Exception as e:
-    print('TAVILY_IMPORT_FAILED', e)
-PY
+            python -c "import importlib,sys
+      try:
+        t=importlib.import_module('tavily')
+        print('TAVILY_IMPORT_OK', getattr(t,'__version__','unknown'))
+      except Exception as e:
+        print('TAVILY_IMPORT_FAILED', e)
+      "
 
       - name: Run agent
         env:
