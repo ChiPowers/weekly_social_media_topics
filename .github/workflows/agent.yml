@@ -21,6 +21,20 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Debug environment and dependencies
+        run: |
+          echo "TAVILY set: ${TAVILY_API_KEY:+yes}"
+          echo "ANTHROPIC set: ${ANTHROPIC_API_KEY:+yes}"
+          echo "API_CALL_BUDGET: ${API_CALL_BUDGET:-unset}"
+          pip show tavily-python || pip show tavily || true
+          python - <<'PY'
+try:
+    import tavily
+    print('TAVILY_IMPORT_OK', getattr(tavily, '__version__', 'unknown'))
+except Exception as e:
+    print('TAVILY_IMPORT_FAILED', e)
+PY
+
       - name: Run agent
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
